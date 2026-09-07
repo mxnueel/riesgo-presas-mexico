@@ -1,0 +1,38 @@
+\documentclass[journal]{IEEEtran}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[hyphens]{url}
+\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{booktabs}
+
+\title{Priorizaci\'on Abierta del Riesgo en Presas de M\'exico ante el Vac\'io de Inspecci\'on de CONAGUA}
+
+\author{Manuel Bautista Mej\'ia\thanks{Correo electr\'onico: 18102328bmm@gmail.com}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+La Comisi\'on Nacional del Agua (CONAGUA) reconoce p\'ublicamente que desconoce el estado f\'isico de cerca de 1{,}000 de sus presas registradas por falta de presupuesto para inspeccionarlas, de un inventario de 836 presas grandes, 4{,}330 chicas, y un estimado de 8{,}000 bordos ni siquiera registrados; 95 presas ya est\'an clasificadas como de alto riesgo \cite{infobae2020presas, eluniversal2021presas}. Este trabajo propone una herramienta de \emph{triage}: un \'indice de prioridad de revisi\'on construido enteramente con datos abiertos de terceros --peligro s\'ismico, lluvia extrema hist\'orica y poblaci\'on cercana-- que no reemplaza la inspecci\'on f\'isica, sino que ordena qu\'e presas sin inspecci\'on reciente ameritan revisi\'on m\'as urgente, haciendo m\'as eficiente el presupuesto de inspecci\'on que la propia CONAGUA admite no tener. El m\'etodo se aplic\'o a las 210 presas que CONAGUA monitorea activamente a trav\'es de su Sistema de Informaci\'on Hidrol\'ogico --el subconjunto p\'ublico disponible, que es precisamente el mejor vigilado y no las 1{,}000 sin supervisi\'on que motivan este trabajo--, combinando la aceleraci\'on m\'axima del terreno (PGA, GEM Foundation), la lluvia de dise\~no a 100 a\~nos ajustada por distribuci\'on Gumbel sobre 33 a\~nos de precipitaci\'on diaria (NASA POWER), y la poblaci\'on en un radio de 30 km (GeoNames) en un \'indice compuesto por percentiles. Los tres factores resultaron pr\'acticamente independientes entre s\'i (correlaciones de Pearson entre 0.09 y 0.29), confirmando que capturan dimensiones de riesgo distintas y no informaci\'on redundante; el resultado no reproduce un ranking dominado por un solo eje geogr\'afico, sino que combina presas de la zona de subducci\'on del Pac\'ifico (Chiapas, Michoac\'an, Guerrero, Oaxaca) con presas de baja sismicidad pero alta densidad poblacional cercana (frontera de Baja California, Puebla). El sistema completo es reproducible de extremo a extremo con c\'odigo abierto y datos p\'ublicos verificables. El \'indice actual mide \emph{peligro} y \emph{exposici\'on}, pero no la tercera dimensi\'on cl\'asica del riesgo --\emph{vulnerabilidad} estructural (altura de cortina, antig\"uedad, estado f\'isico, capacidad del vertedor)-- porque esos campos no est\'an en el cat\'alogo p\'ublico disponible; se solicitaron por separado a trav\'es de la Plataforma Nacional de Transparencia, y su incorporaci\'on al mismo pipeline queda planteada como el paso inmediato hacia un screening estructural completo.
+\end{abstract}
+
+\begin{IEEEkeywords}
+seguridad de presas, gesti\'on de riesgo, datos abiertos, peligro s\'ismico, transparencia gubernamental, seguridad h\'idrica
+\end{IEEEkeywords}
+
+\input{sections/introduccion}
+\input{sections/marco_teorico}
+\input{sections/metodologia}
+\input{sections/resultados}
+\input{sections/discusion}
+\input{sections/conclusiones}
+
+\bibliographystyle{IEEEtran}
+\bibliography{referencias}
+
+\end{document}

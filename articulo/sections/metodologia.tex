@@ -1,0 +1,37 @@
+\section{Metodolog\'ia}
+\label{sec:metodologia}
+
+\subsection{\'Area de estudio y cat\'alogo de presas}
+
+El cat\'alogo base proviene del Sistema de Informaci\'on Hidrol\'ogica de CONAGUA \cite{sih2026catalogo}, que publica nombre, clave, ubicaci\'on (latitud/longitud), municipio, estado y cuenca de disponibilidad de 210 presas con estaci\'on de monitoreo activa, distribuidas en 26 estados. Este es un subconjunto p\'ublico y descargable del inventario nacional, pero corresponde precisamente a las presas \textbf{mejor} vigiladas por CONAGUA --no al subconjunto de \(\sim\)1{,}000 presas sin inspecci\'on reciente que motiva este trabajo (Secci\'on \ref{sec:introduccion})--. El sitio que administra el inventario completo, incluyendo atributos estructurales (altura de cortina, capacidad del vertedor, a\~no de construcci\'on, estado f\'isico y operativo) est\'a protegido contra descarga autom\'atizada por un firewall comercial contra bots; esos campos se solicitaron por separado a trav\'es de la Plataforma Nacional de Transparencia de M\'exico, con respuesta legal esperada en un plazo de 20 a 30 d\'ias h\'abiles. Este art\'iculo reporta la metodolog\'ia y su validaci\'on sobre el subconjunto de 210 presas disponible hoy; el c\'odigo (Secci\'on \ref{sec:conclusiones}) est\'a preparado para incorporar el inventario completo y los atributos estructurales en cuanto est\'en disponibles.
+
+\subsection{Peligro s\'ismico}
+\label{sec:metodologia_sismico}
+
+El peligro s\'ismico de cada presa se obtuvo del \emph{Global Seismic Hazard Map} (versi\'on 2023.1) de la Global Earthquake Model (GEM) Foundation \cite{gem2023hazard}, un raster global de aceleraci\'on m\'axima del terreno (PGA, en fracci\'on de $g$) con 10\% de probabilidad de excedencia en 50 a\~nos (periodo de retorno \(\approx\)475 a\~nos), calculado para condiciones de roca de referencia (\(V_{s30}\) de 760--800 m/s) a una resoluci\'on de 3 arcominutos (\(\approx\)6 km). Por tratarse de condiciones de roca de referencia, el valor no incluye amplificaci\'on por sitio (p. ej. suelos blandos como los de buena parte de la Ciudad de M\'exico); es una base razonable para un \emph{screening}, no un estudio de sitio espec\'ifico. El PGA de cada presa se extrajo por muestreo directo del raster en sus coordenadas (latitud, longitud).
+
+\subsection{Lluvia extrema hist\'orica}
+\label{sec:metodologia_lluvia}
+
+Para cada presa se descarg\'o la serie diaria de precipitaci\'on corregida (\texttt{PRECTOTCORR}) de NASA POWER \cite{nasapower2026} para el periodo 1991--2023 (33 a\~nos) en sus coordenadas exactas. De cada serie se extrajo el m\'aximo anual de precipitaci\'on diaria, y a esos m\'aximos anuales se ajust\'o una distribuci\'on de valores extremos tipo I (Gumbel), el m\'etodo est\'andar en hidrolog\'ia para estimar la magnitud de eventos de lluvia extrema a partir de series hist\'oricas \cite{chow1988applied}. De la distribuci\'on ajustada se estim\'o la lluvia de dise\~no correspondiente a un periodo de retorno de 100 a\~nos, como indicador de qu\'e tan severo es el r\'egimen de lluvia extrema en la ubicaci\'on de cada presa.
+
+\subsection{Poblaci\'on cercana}
+\label{sec:metodologia_poblacion}
+
+Como proxy de exposici\'on --qu\'e tan grave ser\'ia una falla-- se calcul\'o la poblaci\'on total dentro de un radio de 30 km de cada presa, sumando la poblaci\'on reportada de todas las localidades pobladas (c\'odigo de \emph{feature class} \texttt{P} en la nomenclatura de GeoNames) de M\'exico con poblaci\'on conocida, seg\'un el volcado p\'ublico de GeoNames \cite{geonames2026}. La distancia se calcul\'o con la f\'ormula de haversine sobre las coordenadas de cada presa y cada localidad. Este es expl\'icitamente un proxy en l\'inea recta, no una zona de inundaci\'on real: estimar la mancha de inundaci\'on efectiva aguas abajo de una falla requerir\'ia un modelo de elevaci\'on digital y an\'alisis hidrol\'ogico de flujo, fuera del alcance de este trabajo (Secci\'on \ref{sec:discusion}).
+
+\subsection{\'Indice compuesto de prioridad}
+\label{sec:metodologia_indice}
+
+Los tres factores --PGA, lluvia de dise\~no a 100 a\~nos, y poblaci\'on en 30 km-- tienen unidades y distribuciones muy distintas (las tres est\'an fuertemente sesgadas a la derecha, con pocas presas de valores muy altos). Por eso cada uno se convirti\'o a un percentil (0--100) dentro del conjunto de 210 presas, en vez de normalizar por media y desviaci\'on est\'andar: el percentil es robusto a esa asimetr\'ia y directamente interpretable (``esta presa est\'a en el percentil 90 de peligro s\'ismico del pa\'is''). El percentil s\'ismico y el hidrol\'ogico --ambos factores de \emph{peligro}-- se promediaron primero entre s\'i, y ese promedio se combin\'o en partes iguales con el percentil de poblaci\'on --el factor de \emph{exposici\'on}--, de modo que ning\'un factor domine el \'indice final solo por tener dos entradas en vez de una:
+
+\begin{equation}
+I = \frac{1}{2}\left(\frac{P_{\text{s\'ismico}} + P_{\text{hidrol\'ogico}}}{2}\right) + \frac{1}{2} P_{\text{poblacional}}
+\label{eq:indice}
+\end{equation}
+
+donde \(P_x\) denota el percentil del factor \(x\). El resultado, $I \in [0, 100]$, es el \'indice de prioridad de revisi\'on reportado en la Secci\'on \ref{sec:resultados}.
+
+\subsection{Reproducibilidad}
+
+Todo el pipeline --descarga y cacheo de datos, c\'alculo de los tres factores, construcci\'on del \'indice y generaci\'on del mapa-- est\'a implementado en Python y disponible como c\'odigo abierto (Secci\'on \ref{sec:conclusiones}). Las fuentes de datos son p\'ublicas y no requieren llave de acceso, con la excepci\'on del cat\'alogo base de CONAGUA (Secci\'on \ref{sec:metodologia}), que se descarg\'o manualmente por el firewall anti-bots del sitio de origen y se conserva como archivo est\'atico en el repositorio.

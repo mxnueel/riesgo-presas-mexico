@@ -15,3 +15,12 @@ data/raw/precipitacion/
 data/raw/geonames/
 
 .claude/
+
+# LaTeX auxiliares
+articulo/*.aux
+articulo/*.log
+articulo/*.out
+articulo/*.bbl
+articulo/*.blg
+articulo/*.bcf
+articulo/*.run.xml
