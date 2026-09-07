@@ -1,0 +1,13 @@
+venv/
+**/__pycache__/
+*.pyc
+
+# Raster de peligro sísmico (165 MB, excede el límite de GitHub) — se
+# redescarga con scripts/descargar_peligro_sismico.sh
+data/raw/peligro_sismico_gem/
+
+# Caché de precipitación histórica (39 MB, ~210 archivos) — se regenera con
+# src/data_sources/precipitacion.fetch_precip_catalogo, no requiere llave
+data/raw/precipitacion/
+
+.claude/
