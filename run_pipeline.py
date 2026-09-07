@@ -10,6 +10,7 @@ from src.config import DATA_PROCESSED_DIR
 from src.data_sources.conagua_presas import cargar_catalogo
 from src.data_sources.peligro_sismico import agregar_pga
 from src.models.exposicion_hidrologica import agregar_exposicion_hidrologica
+from src.models.exposicion_poblacional import agregar_poblacion_cercana
 from src.models.indice_prioridad import calcular_indice_prioridad
 
 
@@ -23,6 +24,9 @@ def main() -> None:
 
     print("Calculando exposición a lluvia extrema (Gumbel, 100 años)...")
     df = agregar_exposicion_hidrologica(df)
+
+    print("Calculando población cercana (30 km)...")
+    df = agregar_poblacion_cercana(df)
 
     print("Calculando índice de prioridad...")
     df = calcular_indice_prioridad(df)
@@ -38,8 +42,10 @@ def main() -> None:
         "longitud",
         "pga_g",
         "lluvia_diseno_100a_mm",
+        "poblacion_30km",
         "percentil_sismico",
         "percentil_hidrologico",
+        "percentil_poblacional",
         "indice_prioridad",
     ]
     df[columnas].to_csv(salida, index=False)

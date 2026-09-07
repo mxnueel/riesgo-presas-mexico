@@ -38,8 +38,8 @@ def main() -> None:
     ax.set_xlabel("Longitud")
     ax.set_ylabel("Latitud")
     ax.set_title(
-        "Índice de prioridad de revisión por exposición\n"
-        "(peligro sísmico + lluvia extrema) — presas monitoreadas por CONAGUA"
+        "Índice de prioridad de revisión\n"
+        "(peligro sísmico + lluvia extrema + población cercana) — presas monitoreadas por CONAGUA"
     )
     ax.set_aspect("equal")
     fig.colorbar(disp, ax=ax, label="Índice de prioridad (percentil combinado)")

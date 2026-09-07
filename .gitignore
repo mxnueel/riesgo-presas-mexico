@@ -10,4 +10,8 @@ data/raw/peligro_sismico_gem/
 # src/data_sources/precipitacion.fetch_precip_catalogo, no requiere llave
 data/raw/precipitacion/
 
+# Localidades pobladas de México, GeoNames (70 MB) — se redescarga con
+# scripts/descargar_geonames.sh
+data/raw/geonames/
+
 .claude/
